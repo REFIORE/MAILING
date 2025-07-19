@@ -1,11 +1,13 @@
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import smtplib
+
 
 message = MIMEMultipart()
 
-message['From'] = 'aras_andrey@bk.ru'
-message['To'] = 'aras.refiore@gmail.com'
-message['Subject'] = 'Это твоя рассылка\nThis your mailing'
+message['From'] = 'REFIORE@yandex.ru'
+message['To'] = 'REFIORE@yandex.ru'
+message['Subject'] = 'Это твоя рассылка'
 
 modules_completed = [
     'Командная строка',
@@ -23,23 +25,26 @@ executable_modules = [
 
 time_of_study = '3 года'
 
-text_completed = f'''Привет Мама(Папа),
-        я занимаюсь в школе третье место уже {time_of_study}.
-        В процессе я выполнил модули: {modules_completed}!
-        Сейчас я работаю над модулями {executable_modules}.
-        Обучение мне нравится, я получил море знаний!'''
 
-text_uncompleted = f'''Привет Мама(Папа),
-        я занимаюсь в школе третье место уже {time_of_study}.
-        Сейчас я работаю над модулями {executable_modules}.
-        Пока что я улучшаю свои навыки и узнаю много нового!'''
-
-
-def text_output():
-    if modules_completed:
-        print(text_completed)
-    else:
-        print(text_uncompleted)
+if modules_completed:
+    text_completed = f'''Привет Мама(Папа),
+    я занимаюсь в школе третье место уже {time_of_study}.
+    В процессе я выполнил модули: {modules_completed}!
+    Сейчас я работаю над модулями {executable_modules}.
+    Обучение мне нравится, я получил море знаний!'''
+else:
+    text_completed = f'''Привет Мама(Папа),
+    я занимаюсь в школе третье место уже {time_of_study}.
+    Сейчас я работаю над модулями {executable_modules}.
+    Пока что я улучшаю свои навыки и узнаю много нового!'''
 
 
-message.attach(MIMEText(text_output(), "plain"))
+message.attach(MIMEText(text_completed, 'plain'))
+
+password = 'qawrzrykcgficefa'
+
+
+server = smtplib.SMTP_SSL('smtp.yandex.ru:465')
+server.login('REFIORE@yandex.ru', password)
+server.sendmail('REFIORE@yandex.ru', 'REFIORE@yandex.ru', message.as_string())
+server.quit()
